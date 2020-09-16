@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1599702565 source:c:\users\jose\desktop\al2\lexico.cpp
+	"lexico.h"
+
+1600219549 c:\users\jose\desktop\al2\lexico.h
+	<iostream>
+	<string>
+	"pila.h"
+
+1599702504 source:c:\users\jose\desktop\al2\main.cpp
+	<iostream>
+	"lexico.h"
+
+1600198313 c:\users\jose\desktop\al2\pila.h
+	<list>
+	<iostream>
+	<string>
+
+1600200043 source:c:\users\jose\desktop\al2\pila.cpp
+	"pila.h"
+

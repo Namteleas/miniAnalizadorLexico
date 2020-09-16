@@ -7,17 +7,15 @@
 
 #include <iostream>
 #include <string>
-using namespace std;
+#include "pila.h"
 
-#define ERROR -1
-#define LETRA 0
-#define NUMERO 1
-#define PUNTO 2
+using namespace std;
 
 class Lexico{
 private:
     string fuente;
     unsigned int ind;
+    Pila pila;
 
     int estado;
     char c;
@@ -28,6 +26,17 @@ private:
     bool esLetra();
     bool esNumero();
     bool esPunto();
+    bool esAdicion();
+    bool esMultiplicacion();
+    bool esAsignacion();
+    bool esRelacional();
+    bool esAnd();
+    bool esOr();
+    bool esNot();
+    bool esLlave();
+    bool esPuntoComa();
+    bool esEspacio();
+    bool esPesos();
     bool terminado();
 
 public:

@@ -3,95 +3,71 @@
 **/
 
 #include "lexico.h"
-
-Lexico::Lexico(string fuente){
-    ind = 0;
-    estado = 0;
-    this->fuente = fuente;
-}
-
-Lexico::Lexico(){
-    estado = 0;
-    ind = 0;
-}
+#include "macros.h"
 
 char Lexico::sigCaracter()
 {
     return fuente[ind++];
 }
 
-void Lexico::analizar(){
-    int car;
-    estado = 0;
-    /// Inicio del automata
-
-    while(!terminado() && estado != 5){
-        c = sigCaracter();
-        car = tipoCaracter();
-        sigEstado(car);
-    }
-
-}
-
-int Lexico::tipoCaracter(){
+int Lexico::tipoCaracter()
+{
     if(esLetra())
         return LETRA;
     else if(esNumero())
         return NUMERO;
     else if(esPunto())
         return PUNTO;
+    else if(esAdicion())
+        return ADICION;
+    else if(esMultiplicacion())
+        return MULTIPLICACION;
+    else if(esAsignacion())
+        return ASIGNACION;
+    else if(esRelacional())
+        return RELACIONAL;
+    else if(esAnd())
+        return AND;
+    else if(esOr())
+        return OR;
+    else if(esNot())
+        return NOT;
+    else if(esLlave())
+        return LLAVE;
+    else if(esPuntoComa())
+        return PCOMA;
+    else if(esEspacio())
+        return ESPACIO;
+    else if(esPesos())
+        return PESOS;
     else
         return ERROR;
 }
 
 void Lexico::sigEstado(int entrada)
 {
-    /// Reglas de producción del automata
-
     switch(estado){
-    case 0:{
-        if(entrada == LETRA)
-            estado = 1;
-        else if(entrada == NUMERO)
-            estado = 2;
-        else
-            estado = 5;
-    }
-        break;
-    case 1:{
-        if(entrada == ERROR || entrada == PUNTO)
-            estado = 5;
-        else
-            estado = 1;
-    }
-        break;
-    case 2:{
-        if(entrada == NUMERO)
-            estado = 2;
-        else if(entrada == PUNTO)
-            estado = 3;
-        else
-            estado = 5;
-    }
-        break;
-    case 3:{
-        if(entrada == NUMERO)
-            estado = 4;
-        else
-            estado = 5;
-    }
-        break;
-    case 4:{
-        if(entrada == NUMERO)
-            estado = 4;
-        else
-            estado = 5;
-    }
-        break;
-    default:
-        break;
+    case -1:{
+        if(entrada == LETRA){
+            if(c == 'i')
+                estado = AUX_0;
+            else if(c == 'f')
+                estado = AUX_1;
+            else if(c == 'v')
+                estado = AUX_2;
+            else if(c == 'w')
+                estado = AUX_3;
+            else if(c == 'r')
+                estado = AUX_4;
+            else if(c == 'e')
+                estado = AUX_5;
+            else
+                estado = IDENTIFICADOR;
+        }
     }
 
+
+    }
 }
 
 bool Lexico::esLetra()
@@ -109,34 +85,94 @@ bool Lexico::esPunto()
     return c == '.';
 }
 
-bool Lexico::terminado(){
+bool Lexico::esAdicion()
+{
+    return c == '+' || c == '-';
+}
+
+bool Lexico::esMultiplicacion()
+{
+    return c == '*' || c == '/';
+}
+
+bool Lexico::esAsignacion()
+{
+    return c == '=';
+}
+
+bool Lexico::esRelacional()
+{
+    return c == '<' || c == '>';
+}
+
+bool Lexico::esAnd()
+{
+    return c == '&';
+}
+
+bool Lexico::esOr()
+{
+    return c == '|';
+}
+
+bool Lexico::esNot()
+{
+    return c == '!';
+}
+
+bool Lexico::esLlave()
+{
+    return c == '(' || c == ')' || c == '{' || c == '}';
+}
+
+bool Lexico::esPuntoComa()
+{
+    return c == ';';
+}
+
+bool Lexico::esEspacio()
+{
+    return c == ' ';
+}
+
+bool Lexico::esPesos(){
+    return c == '$';
+}
+
+bool Lexico::terminado()
+{
     return ind >= fuente.length();
+}
+
+Lexico::Lexico(string fuente)
+{
+    ind = 0;
+    estado = -1;
+    this->fuente = fuente;
+}
+
+Lexico::Lexico()
+{
+    estado = -1;
+    ind = 0;
 }
 
 void Lexico::entrada(string fuente)
 {
-    ind = 0;
     this->fuente = fuente;
 }
 
-string Lexico::getFuente(){
+void Lexico::analizar()
+{
+
+}
+
+string Lexico::getFuente()
+{
     return fuente;
 }
 
 string Lexico::resultado()
 {
-    string cad;
-
-    if(estado == 1)
-        cad = "Identificador";
-    /**
-    else if(estado == 2)    //Este else if valida enteros
-        cad = "Entero";
-    **/
-    else if(estado == 4)
-        cad = "Real";
-    else
-        cad = "No valido";
-
-    return cad;
+    pila.muestra();
 }
